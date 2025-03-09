@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{header :: header}"></div>
+<body>
+<div th:replace="~{header :: navbar}"></div>
+
+<div class="container">
+    <div class="row col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center"> Create Post</h2>
+            </div>
+            <div class="card-body">
+                <form role="form" method="post" th:action="@{/blog/posts}" th:object="${post}">
+                    <div class="mb-3">
+                        <label class="form-label"> Author </label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="author"
+                                th:field="*{author}"/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Title </label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="title"
+                                placeholder="Enter post title"
+                                name="title"
+                                th:field="*{title}"/>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea
+                                class="form-control"
+                                id="content"
+                                placeholder="Enter post content"
+                                rows="12"
+                                name="content"
+                                th:field="*{body}"
+                        >
+                        </textarea>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div th:replace="~{footer :: footer}"></div>
+
+</body>
+</html>
