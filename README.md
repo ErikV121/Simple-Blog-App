@@ -49,7 +49,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-5. Open your browser and visit `http://localhost:8080`
+5. Open your browser and visit `http://localhost:8080/blog/home`
 
 ## Project Structure
 - `src/main/java` - Java source files
