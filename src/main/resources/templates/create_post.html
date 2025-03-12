@@ -2,25 +2,42 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="~{header :: header}"></div>
+<div th:replace="~{common/header :: header}"></div>
 <body>
-<div th:replace="~{header :: navbar}"></div>
+<div th:replace="~{common/header :: navbar}"></div>
 
 <div class="container">
     <div class="row col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center"> Create Post</h2>
+                <h2 class="text-center" th:text="${post.id == null ? 'Create Post' : 'Edit Post'}"></h2>
             </div>
             <div class="card-body">
-                <form role="form" method="post" th:action="@{/blog/posts}" th:object="${post}">
+                <form role="form" method="post"
+                      th:action="${post.id == null ? '/blog/posts' : '/blog/posts/edit'}"
+                      th:object="${post}">
+                    <input type="hidden" th:if="${post.id != null}" th:field="*{id}"/>
+                    <input type="hidden" th:if="${post.url != null}" th:field="*{url}"/>
+
                     <div class="mb-3">
                         <label class="form-label"> Author </label>
+                        <div class="mb-3 form-check form-switch">
+                            <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="anonymousToggle"
+                                    th:field="*{anonymous}">
+                            <label class="form-check-label" for="anonymousToggle">
+                                Post Anonymously
+                                <i class="fas fa-user-secret"></i>
+                            </label>
+                        </div>
                         <input
                                 type="text"
                                 class="form-control"
                                 id="author"
                                 th:field="*{author}"/>
+                        <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
                     </div>
 
                     <div class="mb-3">
@@ -32,8 +49,8 @@
                                 placeholder="Enter post title"
                                 name="title"
                                 th:field="*{title}"/>
+                        <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
                     </div>
-
 
                     <div class="mb-3">
                         <label class="form-label">Content</label>
@@ -43,22 +60,29 @@
                                 placeholder="Enter post content"
                                 rows="12"
                                 name="content"
-                                th:field="*{body}"
-                        >
+                                th:field="*{body}">
                         </textarea>
-
+                        <p th:if="${#fields.hasErrors('body')}" class="text-danger" th:errors="*{body}"></p>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" th:text="${post.id == null ? 'Create' : 'Update'}">
+                        Submit
+                    </button>
                 </form>
-
             </div>
         </div>
     </div>
-
 </div>
 
+<div th:replace="~{common/footer :: footer}"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
 
-<div th:replace="~{footer :: footer}"></div>
+<!-- Initialize the editor. -->
+<script>
+    new FroalaEditor('#content');
+</script>
 
 </body>
 </html>
