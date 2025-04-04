@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{common/header :: header}"></div>
+
+<body>
+<div th:replace="~{common/header :: navbar}"></div>
+
+<div class="container mt-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- No Posts Message -->
+            <div class="text-center py-5" th:if="${#lists.isEmpty(posts)}">
+                <div class="mb-3">
+                    <i class="bi bi-journal-text" style="font-size: 3rem; color: #dee2e6;"></i>
+                </div>
+                <h4>No posts found</h4>
+                <p class="text-muted">Be the first to share your thoughts!</p>
+                <a th:href="@{/blog/posts/create}" class="btn btn-primary mt-2">Create a Post</a>
+            </div>
+
+            <!-- Blog Posts List -->
+            <div th:if="${not #lists.isEmpty(posts)}" class="mb-5">
+                <div class="card shadow-sm mb-4" th:each="post : ${posts}">
+                    <div class="card-body">
+                        <h2 class="card-title h4" th:text="${post.title}">Blog Post Title</h2>
+
+                        <!-- Preview Content -->
+                        <p class="card-text text-muted mb-3" th:text="${#strings.abbreviate(post.body, 200)}">
+                        </p>
+
+                        <!-- Post Meta -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="text-muted" th:text="${post.author}">Author Name</span>
+                            </div>
+                            <div class="text-muted small">
+                                <i class="bi bi-calendar3"></i> <span th:text="${#temporals.format(post.createdAt, 'MMM d, yyyy')}">April 4, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
+            <div class="card bg-light border-0">
+                <div class="card-body text-center p-5">
+                    <h3>Have thoughts to share?</h3>
+                    <p class="text-muted mb-4">Join our community of writers and share your perspective</p>
+                    <a th:href="@{/blog/posts/create}" class="btn btn-primary">Create a New Post</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/footer :: footer}"></div>
+
+<!-- Bootstrap 5 Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+</body>
+</html>
