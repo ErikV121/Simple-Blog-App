@@ -1,6 +1,7 @@
 package com.erikv121.blogapp.dto.request;
 
 import com.erikv121.blogapp.dto.response.PostResponse;
+import com.erikv121.blogapp.entity.enums.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.UUID;
@@ -17,8 +18,10 @@ public class PostRequest {
     private String title;
 
     @NotBlank(message = "text cannot be blank")
-    @Size(max = 90_000, message = "Body must be at most 90,000 characters")
+    @Size(max = 65_535, message = "Cannot be more than 65,535 characters")
     private String body;
+
+    private Category category;
 
     private boolean anonymous = false;
 
@@ -33,10 +36,11 @@ public class PostRequest {
         this.anonymous = anonymous;
     }
 
-    public PostRequest(UUID id, String author, String title, String body, boolean anonymous, String url) {
+    public PostRequest(UUID id, String author, String title,Category category, String body, boolean anonymous, String url) {
         this.id = id;
         this.author = author;
         this.title = title;
+        this.category = category;
         this.body = body;
         this.anonymous = anonymous;
         setUrl(url);
@@ -47,6 +51,7 @@ public class PostRequest {
                 postResponse.getId(),
                 postResponse.getAuthor(),
                 postResponse.getTitle(),
+                postResponse.getCategory(),
                 postResponse.getBody(),
                 postResponse.isAnonymous(),
                 postResponse.getUrl()
@@ -83,6 +88,14 @@ public class PostRequest {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getBody() {

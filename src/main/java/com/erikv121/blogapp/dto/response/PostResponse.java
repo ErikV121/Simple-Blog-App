@@ -1,5 +1,6 @@
 package com.erikv121.blogapp.dto.response;
 
+import com.erikv121.blogapp.entity.enums.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,15 +12,17 @@ public class PostResponse {
     private UUID id;
     private String author;
     private String title;
+    private Category category;
     private String body;
     private LocalDateTime createdAt;
     private boolean anonymous;
     private String url;
 
-    public PostResponse(UUID id, String author, String title, String body, LocalDateTime createdAt, boolean anonymous, String url) {
+    public PostResponse(UUID id, String author, String title, Category category, String body, LocalDateTime createdAt, boolean anonymous, String url) {
         this.id = id;
         this.author = author;
         this.title = title;
+        this.category = category;
         this.body = body;
         this.createdAt = createdAt;
         this.anonymous = anonymous;
@@ -61,6 +64,14 @@ public class PostResponse {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getBody() {

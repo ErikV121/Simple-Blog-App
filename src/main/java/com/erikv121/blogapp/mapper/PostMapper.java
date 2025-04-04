@@ -11,11 +11,13 @@ public interface PostMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "author", expression = "java(post.isAnonymous() ? \"Anonymous\" : post.getOriginalAuthor())")
+    @Mapping(target = "category", source = "category")
     @Mapping(target = "url", source = "url")
     PostResponse entityToDto(Post post);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "anonymous", source = "anonymous")
+    @Mapping(target = "category", source = "category")
     @Mapping(target = "url", source = "url")
     Post dtoToEntity(PostRequest postRequest);
 }

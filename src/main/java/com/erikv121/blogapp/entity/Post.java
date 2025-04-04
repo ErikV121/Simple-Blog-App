@@ -1,5 +1,6 @@
 package com.erikv121.blogapp.entity;
 
+import com.erikv121.blogapp.entity.enums.Category;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,9 +22,13 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @Lob
-    @Column(nullable = false)
+//    @Lob
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String body;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private Category category;
 
     @CreatedDate
     @Column(updatable = false)
@@ -38,10 +43,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(String author, String title, String body, boolean anonymous) {
+    public Post(String author, String title, String body,Category category, boolean anonymous) {
         this.author = author;
         this.title = title;
         this.body = body;
+        this.category = category;
         this.anonymous = anonymous;
         setUrl(title);
     }
@@ -88,6 +94,14 @@ public class Post {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public boolean isAnonymous() {
