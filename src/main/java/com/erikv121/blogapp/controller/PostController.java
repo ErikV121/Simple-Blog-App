@@ -29,17 +29,11 @@ public class PostController {
         return "redirect:/blog/posts";
     }
 
-    @GetMapping("/home")
-    public String home() {
-        return "index";
-    }
-
     @GetMapping("/posts/create")
     public String postForm(Model model) {
         model.addAttribute("post", new PostRequest());
         return "create_post";
     }
-
 
     @GetMapping("/posts")
     public String posts(Model model) {
@@ -61,7 +55,6 @@ public class PostController {
             model.addAttribute("post", postRequest);
             return "create_post";
         }
-
         postService.updatePost(postRequest);
         return "redirect:/blog/posts";
     }
@@ -78,4 +71,14 @@ public class PostController {
         model.addAttribute("post", post);
         return "view_post";
     }
+
+    @GetMapping("/posts/search")
+    public String searchPosts(@RequestParam(required = false) String title, Model model) {
+        if (title == null || title.trim().isEmpty()) {
+            return "redirect:/blog/posts";
+        }
+        model.addAttribute("posts", postService.findPostsByTitle(title));
+        return "posts";
+    }
+
 }
