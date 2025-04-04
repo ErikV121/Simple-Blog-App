@@ -36,7 +36,7 @@ public class PostService {
     }
 
     public List<PostResponse> findAllPosts() {
-        return postRepository.findAll().stream()
+        return postRepository.findAllPostOrderDESC().stream()
                 .map(postMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -53,6 +53,7 @@ public class PostService {
         existingPost.setTitle(postRequest.getTitle());
         existingPost.setBody(postRequest.getBody());
         existingPost.setAuthor(postRequest.getAuthor());
+        existingPost.setCategory(postRequest.getCategory());
         existingPost.setAnonymous(postRequest.isAnonymous());
         existingPost.setUrl(postRequest.getTitle().toLowerCase().replace(" ", "-"));
         log.info("checking id AFTER: "+ existingPost.getId());
@@ -62,6 +63,12 @@ public class PostService {
 
     public void deletePost(UUID id) {
         postRepository.deleteById(id);
+    }
+
+    public List<PostResponse> findPostsByTitle(String title) {
+        return postRepository.findPostsByTitle(title).stream()
+                .map(postMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     public PostResponse getPostById(UUID id) {
