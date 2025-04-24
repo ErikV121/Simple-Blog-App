@@ -19,8 +19,9 @@
                     <input type="hidden" th:if="${post.id != null}" th:field="*{id}"/>
                     <input type="hidden" th:if="${post.url != null}" th:field="*{url}"/>
 
+                    <!-- Replace the author input with this -->
                     <div class="mb-3">
-                        <label class="form-label"> Author </label>
+                        <label class="form-label">Author</label>
                         <div class="mb-3 form-check form-switch">
                             <input
                                     class="form-check-input"
@@ -35,42 +36,113 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                id="author"
-                                th:field="*{author}"/>
-                        <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
+                                id="authorDisplay"
+                                th:value="${#authentication.name}"
+                                readonly="readonly">
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label"> Title </label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="title"
-                                placeholder="Enter post title"
-                                name="title"
-                                th:field="*{title}"/>
-                        <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
-                    </div>
+<!--                    <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>-->
 
-                    <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea
-                                class="form-control"
-                                id="content"
-                                placeholder="Enter post content"
-                                rows="12"
-                                name="content"
-                                th:field="*{body}">
-                        </textarea>
-                        <p th:if="${#fields.hasErrors('body')}" class="text-danger" th:errors="*{body}"></p>
-                    </div>
-                    <button type="submit" class="btn btn-primary" th:text="${post.id == null ? 'Create' : 'Update'}">
-                        Submit
-                    </button>
-                </form>
+            <div class="mb-3">
+                <label class="form-label"> Title </label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Enter post title"
+                        name="title"
+                        th:field="*{title}"/>
+                <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <div class="btn-group d-flex flex-wrap" role="group" aria-label="Category selection">
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryTechnology"
+                           value="Technology" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryTechnology">Technology</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryLifestyle"
+                           value="Lifestyle" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryLifestyle">Lifestyle</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryTravel" value="Travel"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryTravel">Travel</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryFood" value="Food"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryFood">Food</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryHealth" value="Health"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryHealth">Health</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryFinance" value="Finance"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryFinance">Finance</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryEducation"
+                           value="Education" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryEducation">Education</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryEntertainment"
+                           value="Entertainment" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryEntertainment">Entertainment</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categorySports" value="Sports"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categorySports">Sports</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryFashion" value="Fashion"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryFashion">Fashion</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryBeauty" value="Beauty"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1" for="categoryBeauty">Beauty</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryAutomotive"
+                           value="Automotive" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryAutomotive">Automotive</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryBusiness" value="Business"
+                           autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryBusiness">Business</label>
+
+                    <input type="radio" class="btn-check" th:field="*{category}" id="categoryPhotography"
+                           value="Photography" autocomplete="off">
+                    <label class="btn btn-sm btn-outline-primary rounded-pill m-1"
+                           for="categoryPhotography">Photography</label>
+                </div>
+                <p th:if="${#fields.hasErrors('category')}" class="text-danger" th:errors="*{category}"></p>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <textarea
+                        class="form-control"
+                        id="content"
+                        placeholder="Enter post content"
+                        rows="12"
+                        name="content"
+                        th:field="*{body}">
+                        </textarea>
+                <p th:if="${#fields.hasErrors('body')}" class="text-danger" th:errors="*{body}"></p>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="${post.id == null ? 'Create' : 'Update'}">
+                Submit
+            </button>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 <div th:replace="~{common/footer :: footer}"></div>
@@ -79,10 +151,10 @@
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
 
-<!-- Initialize the editor. -->
 <script>
     new FroalaEditor('#content');
 </script>
+<script th:src="@{/js/script.js}"></script>
 
 </body>
 </html>
