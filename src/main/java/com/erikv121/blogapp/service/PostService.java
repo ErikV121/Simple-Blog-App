@@ -3,8 +3,10 @@ package com.erikv121.blogapp.service;
 import com.erikv121.blogapp.dto.request.PostRequest;
 import com.erikv121.blogapp.dto.response.PostResponse;
 import com.erikv121.blogapp.entity.Post;
+import com.erikv121.blogapp.entity.User;
 import com.erikv121.blogapp.mapper.PostMapper;
 import com.erikv121.blogapp.repository.PostRepository;
+import com.erikv121.blogapp.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,18 +21,23 @@ public class PostService {
     private static final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private UserRepository userRepository;
 
-    public PostService(PostRepository postRepository, PostMapper postMapper) {
+    public PostService(PostRepository postRepository, PostMapper postMapper, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
+        this.userRepository = userRepository;
     }
 
-//    TODO need to add correct exception handling
+    public void createPost(PostRequest postRequest, String username) {
+        log.info("Create Post Username: " + username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    public void createPost(PostRequest postRequest) {
         Post post = postMapper.dtoToEntity(postRequest);
-        log.info("id: "+ post.getId());
+        post.setUser(user);
         post.setUrl(postRequest.getTitle());
+
         Post savedPost = postRepository.save(post);
         postMapper.entityToDto(savedPost);
     }
@@ -40,6 +47,23 @@ public class PostService {
                 .map(postMapper::entityToDto)
                 .collect(Collectors.toList());
     }
+
+    public List<PostResponse> findAllPostsRandomly() {
+        return postRepository.findAllPostsRandomly().stream()
+                .map(postMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    // Add this method to PostService
+    public List<PostResponse> findPostsByUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return postRepository.findByUser(user).stream()
+                .map(postMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
 
     public void updatePost(PostRequest postRequest) {
         if (postRequest.getId() == null) {
@@ -52,7 +76,6 @@ public class PostService {
 
         existingPost.setTitle(postRequest.getTitle());
         existingPost.setBody(postRequest.getBody());
-        existingPost.setAuthor(postRequest.getAuthor());
         existingPost.setCategory(postRequest.getCategory());
         existingPost.setAnonymous(postRequest.isAnonymous());
         existingPost.setUrl(postRequest.getTitle().toLowerCase().replace(" ", "-"));
@@ -66,7 +89,7 @@ public class PostService {
     }
 
     public List<PostResponse> findPostsByTitle(String title) {
-        return postRepository.findPostsByTitle(title).stream()
+        return postRepository.findByTitleContainingIgnoreCase(title).stream()
                 .map(postMapper::entityToDto)
                 .collect(Collectors.toList());
     }
