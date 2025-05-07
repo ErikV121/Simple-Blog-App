@@ -4,12 +4,13 @@ import com.erikv121.blogapp.dto.request.CommentRequestDto;
 import com.erikv121.blogapp.service.CommentService;
 import com.erikv121.blogapp.service.PostService;
 import jakarta.validation.Valid;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @Controller
@@ -29,7 +30,7 @@ public class CommentController {
                                 @Valid @ModelAttribute CommentRequestDto commentRequest,
                                 BindingResult bindingResult,
                                 Model model,
-                                Principal principal) {
+                                OAuth2AuthenticationToken oauth2AuthenticationToken) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("comment", commentRequest);
@@ -37,7 +38,9 @@ public class CommentController {
             return "/blog/posts/" + uri;
         }
 
-        String username = principal.getName();
+        OidcUser oidcUser = (OidcUser) oauth2AuthenticationToken.getPrincipal();
+        String username = oidcUser.getPreferredUsername();
+
         commentService.createComment(postId, commentRequest, username);
         return "redirect:/blog/posts/" + postService.getPostById(postId).getUrl();
     }
