@@ -10,7 +10,7 @@ import java.util.UUID;
 public class PostResponse {
     private static final Logger log = LoggerFactory.getLogger(PostResponse.class);
     private UUID id;
-    private String author;
+    private String username;
     private String title;
     private Category category;
     private String body;
@@ -18,9 +18,9 @@ public class PostResponse {
     private boolean anonymous;
     private String url;
 
-    public PostResponse(UUID id, String author, String title, Category category, String body, LocalDateTime createdAt, boolean anonymous, String url) {
+    public PostResponse(UUID id, String username, String title, Category category, String body, LocalDateTime createdAt, boolean anonymous, String url) {
         this.id = id;
-        this.author = author;
+        this.username = username;
         this.title = title;
         this.category = category;
         this.body = body;
@@ -50,12 +50,12 @@ public class PostResponse {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTitle() {

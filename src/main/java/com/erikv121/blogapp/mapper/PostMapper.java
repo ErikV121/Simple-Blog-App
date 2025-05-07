@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface PostMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "author", expression = "java(post.isAnonymous() ? \"Anonymous\" : post.getOriginalAuthor())")
+    @Mapping(target = "username", expression = "java(post.isAnonymous() ? \"Anonymous\" : post.getUser().getUsername())")
     @Mapping(target = "category", source = "category")
     @Mapping(target = "url", source = "url")
     PostResponse entityToDto(Post post);
@@ -19,6 +19,7 @@ public interface PostMapper {
     @Mapping(target = "anonymous", source = "anonymous")
     @Mapping(target = "category", source = "category")
     @Mapping(target = "url", source = "url")
+    @Mapping(target = "user", ignore = true) // User is set in service
     Post dtoToEntity(PostRequest postRequest);
 }
 

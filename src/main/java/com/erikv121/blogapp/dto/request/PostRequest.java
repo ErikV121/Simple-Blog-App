@@ -9,9 +9,7 @@ import java.util.UUID;
 public class PostRequest {
     private UUID id;
 
-    @NotBlank(message = "Author cannot be blank")
-    @Size(max = 100, message = "Author name must be at most 100 characters")
-    private String author;
+    private UUID userId;
 
     @NotBlank(message = "Title cannot be blank")
     @Size(max = 200, message = "Title must be at most 200 characters")
@@ -29,16 +27,9 @@ public class PostRequest {
 
     public PostRequest() {}
 
-    public PostRequest(String author, String title, String body, boolean anonymous) {
-        this.author = author;
-        this.title = title;
-        this.body = body;
-        this.anonymous = anonymous;
-    }
-
-    public PostRequest(UUID id, String author, String title,Category category, String body, boolean anonymous, String url) {
+    public PostRequest(UUID id, String title, Category category,
+                       String body, boolean anonymous, String url) {
         this.id = id;
-        this.author = author;
         this.title = title;
         this.category = category;
         this.body = body;
@@ -49,13 +40,20 @@ public class PostRequest {
     public static PostRequest fromResponse(PostResponse postResponse) {
         return new PostRequest(
                 postResponse.getId(),
-                postResponse.getAuthor(),
                 postResponse.getTitle(),
                 postResponse.getCategory(),
                 postResponse.getBody(),
                 postResponse.isAnonymous(),
                 postResponse.getUrl()
         );
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getUrl() {
@@ -74,13 +72,6 @@ public class PostRequest {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public String getTitle() {
         return title;

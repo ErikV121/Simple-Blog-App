@@ -22,7 +22,7 @@ public class BlogController {
 
     @GetMapping("/")
     public String viewBlogPosts(Model model) {
-        model.addAttribute("posts", postService.findAllPosts());
+        model.addAttribute("posts", postService.findAllPostsRandomly());
         return "/view_all_blogs";
     }
 }
