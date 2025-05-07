@@ -14,58 +14,61 @@
     </div>
 
     <div id="post-container" class="table-container">
-        <table class="table table-hover">
+        <form class="mb-4" th:action="@{/blog/posts/search}" method="get">
+            <div class="input-group">
+                <input class="form-control" type="text" name="title" placeholder="Search posts by title..."
+                       th:value="${param.title}"/>
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </form>
+
+        <table class="table table-hover table-fixed">
             <thead>
             <tr>
-                <th style="width: 15%">Author</th>
-                <th style="width: 20%">Post Title</th>
-                <th style="width: 25%">Post Description</th>
-                <th style="width: 15%">Created On</th>
-                <th style="width: 15%">Actions</th>
+                <th style="width: 12%">Author</th>
+                <th style="width: 12%">Post Title</th>
+                <th style="width: 12%">Category</th>
+                <th style="width: 24%">Post Description</th>
+                <th style="width: 20%">Created On</th>
+                <th style="width: 20%">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="post: ${posts}">
                 <td>
-                    <span th:text="${post.author}">
+                    <span th:text="${post.username}">
                         <i th:if="${post.anonymous}" class="bi bi-user-secret me-1" title="Anonymous Post"></i>
                     </span>
                 </td>
                 <td th:text="${post.title}"></td>
-                <td th:text="${post.body}"></td>
+                <td>
+                    <span th:text="${post.category}"></span>
+                </td>
+                <td class="description-cell" th:utext="${#strings.abbreviate(post.body, 100)}"></td>
                 <td>
                     <i class="bi bi-calendar3 me-1"></i>
-                    <span th:text="${post.createdAt}"></span>
+                    <span th:text="${#temporals.format(post.createdAt,'dd MMM yyyy')}"></span>
                 </td>
                 <td>
                     <a class="btn btn-sm btn-outline-primary me-1"
                        th:href="@{/blog/posts/edit/{id}(id=${post.id})}">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a class="btn btn-sm btn-outline-danger"
+                    <a class="btn btn-sm btn-outline-danger me-1"
                        th:href="@{/blog/posts/delete/{id}(id=${post.id})}"
                        onclick="return confirm('Are you sure you want to delete this post?')">
                         <i class="bi bi-trash"></i>
                     </a>
-                    <a class="btn btn-sm btn-outline-info "
+                    <a class="btn btn-sm btn-outline-info"
                        th:href="@{/blog/posts/{postUrl}(postUrl=${post.getUrl()})}">
                         <i class="bi bi-eye"></i>
                     </a>
-
                 </td>
             </tr>
             </tbody>
         </table>
-    </div>
-
-    <!-- HTMX Button -->
-    <div th:if="${posts.size() > 0}" class="text-center">
-        <button class="btn btn-primary"
-                hx-get="/load-more-posts"
-                hx-target="#post-container"
-                hx-swap="beforeend">
-            <i class="bi bi-arrow-down-circle me-2"></i>Load More Posts
-        </button>
     </div>
 
     <div th:if="${posts.isEmpty()}" class="alert alert-info text-center">
@@ -76,5 +79,6 @@
 <div th:replace="~{common/footer :: footer}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

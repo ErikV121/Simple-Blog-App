@@ -16,7 +16,7 @@ body {
 
 .navbar {
     background-color: var(--card-background);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-brand, .nav-link {
@@ -26,20 +26,45 @@ body {
 .card {
     background-color: var(--card-background);
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s;
 }
 
 .table-container {
     background: var(--card-background);
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     padding: 20px;
     margin-bottom: 2rem;
 }
 
 .table {
     margin-bottom: 0;
+}
+
+
+.table-fixed {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.login-container {
+    max-width: 450px;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.description-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.btn-sm {
+    margin-right: 3px;
 }
 
 .table thead th {
@@ -64,7 +89,7 @@ body {
 .footer {
     margin-top: auto;
     background: var(--card-background);
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
     padding: 1rem 0;
 }
 

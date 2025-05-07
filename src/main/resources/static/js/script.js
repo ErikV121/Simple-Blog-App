@@ -1,5 +1,5 @@
 const anonymousToggle = document.getElementById('anonymousToggle');
-const authorInput = document.getElementById('author');
+const authorInput = document.getElementById('authorDisplay');
 
 anonymousToggle.addEventListener('change', function () {
     if (this.checked) {
@@ -10,4 +10,3 @@ anonymousToggle.addEventListener('change', function () {
         authorInput.removeAttribute('readonly');
     }
 });
-
