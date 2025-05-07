@@ -11,11 +11,69 @@
         <h1 class="mb-3" th:text="${post.title}"></h1>
         <div class="text-muted mb-3 ">
             <i class="bi bi-person-circle me-1"></i>
-            <span th:text="${post.anonymous} ? 'Anonymous' : ${post.author}"></span>
-            <span class="ms-3"><i class="bi bi-calendar-event me-1"></i> <span th:text="${post.createdAt}"></span></span>
+            <span th:text="${post.anonymous} ? 'Anonymous' : ${post.username}"></span>
+            <span class="ms-3"><i class="bi bi-calendar-event me-1"></i> <span
+                    th:text="${#temporals.format(post.createdAt, 'dd-MM-yyyy ')}"></span></span>
         </div>
         <hr>
         <div class="post-content" th:utext="${post.body}"></div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="card shadow-sm p-4 mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Comments</h3>
+            <button id="toggleComments" class="btn btn-primary">
+                <i class="bi bi-chat-dots me-1"></i> Read Comments
+            </button>
+        </div>
+
+        <div id="commentsSection" style="display: none;">
+            <!-- If no comments -->
+            <div th:if="${#lists.isEmpty(comments)}" class="alert alert-info">
+                No comments yet. Be the first to comment!
+            </div>
+
+            <!-- Comments list -->
+            <div th:if="${not #lists.isEmpty(comments)}" class="comment-list mb-4">
+                <div th:each="comment : ${comments}" class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                <i class="bi bi-person-circle me-1"></i>
+                                <span th:text="${comment.username}"></span>
+                            </h6>
+                            <small class="text-muted"
+                                   th:text="${#temporals.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></small>
+                        </div>
+                        <p class="card-text" th:text="${comment.body}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add comment form -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form th:action="@{/blog/posts/{id}/comments(id=${post.id})}" method="post">
+                        <div class="mb-3">
+                            <label for="commentContent" class="form-label">Your Comment</label>
+                            <textarea class="form-control" id="commentContent" name="body" rows="3"
+                                      required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted">
+                                <i class="bi bi-person-circle me-1"></i> Posting as:
+                                <span id="posterName" th:text="${#authentication.name}"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send me-1"></i> Post Comment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="mt-4">
@@ -28,5 +86,22 @@
 <div th:replace="~{common/footer :: footer}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton = document.getElementById('toggleComments');
+        const commentsSection = document.getElementById('commentsSection');
+
+        toggleButton.addEventListener('click', function () {
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                toggleButton.innerHTML = '<i class="bi bi-chat-dots me-1"></i> Hide Comments';
+            } else {
+                commentsSection.style.display = 'none';
+                toggleButton.innerHTML = '<i class="bi bi-chat-dots me-1"></i> Read Comments';
+            }
+        });
+    });
+</script>
 </body>
 </html>
