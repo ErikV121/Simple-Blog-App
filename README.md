@@ -1,57 +1,101 @@
 # Simple Blog App
 
 ## Overview
-This is a Spring Boot-based web application designed as a monolithic architecture. It implements server-side rendering (SSR) using Thymeleaf templates and Bootstrap 5 for styling. The app will support Spring Security, Spring Actuator, and may include a rate limiter for better performance and security.
+Simple Blog App is a monolithic web application built with Java 21 and Spring Boot. It uses server-side rendering with Thymeleaf and integrates with Keycloak for secure user authentication and authorization. The application supports full blog post management and includes a built-in commenting system. The UI is styled using Bootstrap 5 to ensure a responsive experience across devices.
+
+## Features
+- Secure authentication and authorization using Keycloak (OAuth2/OpenID Connect)
+- Create, read, update, and delete blog posts
+- Commenting system on individual blog posts
+- Server-side rendered HTML pages using Thymeleaf
+- Responsive UI with Bootstrap 5
 
 ## Technologies Used
 
 ### Backend
-- **Java** - Primary programming language
-- **Spring Boot** - Framework for creating standalone, production-grade Spring-based applications
-- **Spring Data JPA** - Simplifies data access layer implementation
-- **Thymeleaf** - Server-side Java template engine for web applications, enabling dynamic content rendering in HTML
+- **Java 21** – Primary programming language
+- **Spring Boot** – Web application framework
+- **Spring Security** – Authentication and authorization
+- **Spring Data JPA** – Database access and ORM
+- **Thymeleaf** – Template engine for rendering dynamic views
 
 ### Frontend
-- **HTML** - Structure of the web pages
-- **CSS** - Styling and layout of the application
-- **Bootstrap** - Frontend framework for responsive design
+- **HTML & CSS** – Page structure and styling
+- **Bootstrap 5** – Responsive and mobile-first design framework
 
-## Features
-- Create, read, update, and delete blog posts
-- Responsive design for desktop and mobile devices
-- User authentication and authorization **(coming soon)**
-- Comment system for blog posts **(coming soon)**
+## Authentication
+This app uses **Keycloak** for OAuth2-based authentication. When users access secured endpoints, they are redirected to the Keycloak login page.
 
 ## Getting Started
 
 ### Prerequisites
-- Java 17
+- Java 21
 - Maven
+- A running Keycloak server with:
+  - Realm (e.g., `Blogified-Realm`)
+  - Client configured for this application (e.g., `simple-blog-app`)
+  - Valid redirect URIs set in the client settings
 
-### Installation
-1. Clone the repository
-```bash
-git clone https://github.com/ErikV121/Simple-Blog-App.git
-```
+### Installation Steps
 
-2. Navigate to the project directory
-```bash
-cd Simple-Blog-App
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ErikV121/Simple-Blog-App.git
+   ```
 
-3. Build the project
-```bash
-mvn clean install
-```
+2. **Navigate to the project directory**
 
-4. Run the application
-```bash
-mvn spring-boot:run
-```
+   ```bash
+   cd Simple-Blog-App
+   ```
 
-5. Open your browser and visit `http://localhost:8080/blog/home`
+3. **Configure Keycloak Integration**
+   Open  `application.properties` and configure:
+# H2 DB Configuration
+- spring.datasource.url=jdbc:h2:~/test
+- spring.datasource.driverClassName=org.h2.Driver
+- spring.jpa.hibernate.ddl-auto=update
+- spring.datasource.username=sa
+- spring.datasource.password=
 
-## Project Structure
-- `src/main/java` - Java source files
-- `src/main/resources/templates` - Thymeleaf templates
-- `src/main/resources/static` - Static resources (CSS)
+# Thymeleaf Configuration
+- spring.thymeleaf.prefix=classpath:/templates/
+- spring.thymeleaf.suffix=.html
+
+# MySQL DB Configuration
+- spring.jpa.hibernate.ddl-auto=update
+- spring.datasource.url=${DB_URL}
+- spring.datasource.username=${DB_USERNAME}
+- spring.datasource.password=${DB_PASSWORD}
+- spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+- spring.jpa.show-sql=false
+
+# Keycloak Configuration
+- spring.security.oauth2.resourceserver.jwt.issuer-uri=${KEYCLOAK_ISSUER_URI}
+- spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${KEYCLOAK_JWK_SET_URI}
+- spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/Blogified-Realm
+- spring.security.oauth2.client.registration.keycloak.client-name=Blogified Client
+- spring.security.oauth2.client.registration.keycloak.client-id=Blogified
+- spring.security.oauth2.client.registration.keycloak.client-secret=${KEYCLOAK_CLIENT_SECRET}
+- spring.security.oauth2.client.registration.keycloak.scope=openid, offline_access, profile
+  
+
+4. **Build the project**
+
+   ```bash
+   mvn clean install
+   ```
+
+5. **Run the application**
+
+   ```bash
+   mvn spring-boot:run
+   ```
+
+6. **Access the app**
+   Open your browser and go to:
+
+   ```
+   http://localhost:8080
+   ```
+
